@@ -11,16 +11,19 @@ const Cart = props => {
     const removeItemHandler = props.removeItemHandler;
     const removeAllItemsHandler = props.removeAllItemsHandler;
 
+
     if (products.length === 0) return <></>;
 
     const findProductById = (targetId) => {
         return products.filter(product => product.id === Number(targetId))[0];
     };
 
+    let total = 0;
     const productRows = [];
     for (let id in items) {
         let quantity = items[id];
         let product = findProductById(id);
+        total += product.unitPrice * quantity;
         productRows.push(
             <tr key={product._links.self.href}>
                 <td><Image src={placeholder} height="100px" width="100px"/></td>
@@ -42,6 +45,7 @@ const Cart = props => {
         );
     }
 
+
     return (
         <Container>
             <Row>
@@ -58,6 +62,12 @@ const Cart = props => {
                     {productRows}
                     </tbody>
                 </Table>
+            </Row>
+            <Row className="d-flex">
+                <h5 className="ml-auto">Total: $ {total}</h5>
+            </Row>
+            <Row className="d-flex">
+                <Button className="ml-auto">Order Now</Button>
             </Row>
         </Container>
     );
