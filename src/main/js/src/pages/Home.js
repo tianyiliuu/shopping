@@ -23,8 +23,8 @@ const Home = () => {
 
 
     const productList = products.map(product => (
-        <Col md={4} lg={3} xl={2} className="h-90">
-            <Card key={product._links.self.href} className="p-2 m-2 h-90">
+        <Col xs={6} md={4} lg={3} xl={2} className="d-flex align-items-stretch">
+            <Card key={product._links.self.href} className="p-2 m-2 mh-90">
                 <Card.Img variant="top" src={placeholder}/>
                 <Card.Body className="d-flex flex-column">
                     <Card.Title>{product.name}</Card.Title>
