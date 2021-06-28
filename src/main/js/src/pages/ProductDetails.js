@@ -1,7 +1,7 @@
 import {Button, Container, Image} from "react-bootstrap";
 import {useParams} from 'react-router-dom';
 import {useEffect, useState} from "react";
-import placeholder from "../images/placeholder.png";
+import placeholder from "../assets/images/products/placeholder.png";
 
 const ProductDetails = props => {
 

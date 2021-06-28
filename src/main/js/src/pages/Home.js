@@ -1,5 +1,5 @@
 import {Button, Card, Col, Container, Row} from "react-bootstrap";
-import placeholder from "../images/placeholder.png";
+import placeholder from "../assets/images/products/placeholder.png";
 import {Link} from "react-router-dom";
 
 const Home = props => {

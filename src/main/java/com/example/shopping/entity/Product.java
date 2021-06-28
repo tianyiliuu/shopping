@@ -50,4 +50,14 @@ public class Product {
         this.active = active;
         this.unitsInStock = unitsInStock;
     }
+
+    public Product(String sku, String name, String description, String imageUrl, boolean active, int unitsInStock, double unitPrice) {
+        this.sku = sku;
+        this.name = name;
+        this.description = description;
+        this.unitPrice = new BigDecimal(String.valueOf(unitPrice));
+        this.imageUrl = imageUrl;
+        this.active = active;
+        this.unitsInStock = unitsInStock;
+    }
 }

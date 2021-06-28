@@ -1,6 +1,7 @@
 import {Button, ButtonGroup, Container, Image, Row, Table} from "react-bootstrap";
-import placeholder from "../images/placeholder.png";
+import placeholder from "../assets/images/products/placeholder.png";
 import React from "react";
+import {Link} from "react-router-dom";
 
 
 const Cart = props => {
@@ -67,7 +68,7 @@ const Cart = props => {
                 <h5 className="ml-auto">Total: $ {total}</h5>
             </Row>
             <Row className="d-flex">
-                <Button className="ml-auto">Order Now</Button>
+                <Link to="/order-info-form" className="ml-auto"><Button>Order Now</Button></Link>
             </Row>
         </Container>
     );

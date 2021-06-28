@@ -5,6 +5,7 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import ProductDetails from "./pages/ProductDetails";
 import Header from "./components/Header";
 import Cart from "./pages/Cart";
+import OrderInfoForm from "./pages/OrderInfoForm";
 
 function App() {
 
@@ -64,7 +65,7 @@ function App() {
             redirect: 'follow'
         };
 
-        fetch("/api/products", requestOptions)
+        fetch("/api/products?page=0&size=2000", requestOptions)
             .then(response => response.json())
             .then(result => setProducts(result._embedded.products))
             .catch(error => console.log('error', error));
@@ -84,6 +85,10 @@ function App() {
                 </Route>
                 <Route excat path="/cart">
                     <Cart products={products} items={items} addItemHandler={addItemHandler} removeItemHandler={removeItemHandler} removeAllItemsHandler={removeAllItemsHandler} />
+                </Route>
+                <Route excat path="/order-info-form">
+                    <div>sv</div>
+                    <OrderInfoForm />
                 </Route>
             </Switch>
         </Router>
