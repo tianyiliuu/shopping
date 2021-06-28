@@ -1,12 +1,15 @@
-import {Container, Image, Row, Table} from "react-bootstrap";
+import {Button, ButtonGroup, Container, Image, Row, Table} from "react-bootstrap";
 import placeholder from "../images/placeholder.png";
+import React from "react";
 
 
 const Cart = props => {
 
     const items = props.items;
-    const setItemHandler = props.setItemHandler
     const products = props.products;
+    const addItemHandler = props.addItemHandler;
+    const removeItemHandler = props.removeItemHandler;
+    const removeAllItemsHandler = props.removeAllItemsHandler;
 
     if (products.length === 0) return <></>;
 
@@ -22,9 +25,21 @@ const Cart = props => {
             <tr key={product._links.self.href}>
                 <td><Image src={placeholder} height="100px" width="100px"/></td>
                 <td>{product.name} <br/> {product.description} <br/> {product.unitPrice}</td>
-                <td>{quantity} <br/> Sub-total: $ {product.unitPrice * quantity}</td>
+                <td>
+                    {quantity} <br/>
+                    Sub-total: $ {(product.unitPrice * quantity).toFixed(2)} <br/>
+                    <ButtonGroup aria-label="Basic example">
+                        {
+                            (quantity === 1) ?
+                                <Button variant="outline-secondary" disabled>-</Button>
+                                : <Button variant="outline-secondary" onClick={() => removeItemHandler(id)}>-</Button>
+                        }
+                        <Button variant="outline-secondary" onClick={() => addItemHandler(id)}>+</Button>
+                        <Button variant="outline-secondary" onClick={() => removeAllItemsHandler(id)}>Remove</Button>
+                    </ButtonGroup>
+                </td>
             </tr>
-        )
+        );
     }
 
     return (

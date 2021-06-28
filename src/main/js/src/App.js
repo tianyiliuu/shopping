@@ -23,16 +23,28 @@ function App() {
         localStorage.setItem("items", JSON.stringify(nouveauItem));
     };
 
-    const setItemHandler = (id, num) => {
+    const removeItemHandler = (id) => {
         id = "" + id;
         let nouveauItem = {
             ...items,
-            [id]: num,
+            [id]: (id in items ? items[id] : 0) - 1,
         };
         setItems(nouveauItem);
-        setNumItems(numItems - items[id] + num);
+        setNumItems(numItems - 1);
         localStorage.setItem("items", JSON.stringify(nouveauItem));
-    }
+    };
+
+    const removeAllItemsHandler = (id) => {
+        id = "" + id;
+        let nouveauItem = {
+            ...items
+        };
+        delete nouveauItem[id];
+        setItems(nouveauItem);
+        console.log(nouveauItem);
+        setNumItems(numItems - items[id]);
+        localStorage.setItem("items", JSON.stringify(nouveauItem));
+    };
 
     useEffect(() => {
         let items = localStorage.getItem("items");
@@ -71,7 +83,7 @@ function App() {
                     <ProductDetails addItemHandler={addItemHandler}/>
                 </Route>
                 <Route excat path="/cart">
-                    <Cart products={products} items={items} setItemHandler={setItemHandler}/>
+                    <Cart products={products} items={items} addItemHandler={addItemHandler} removeItemHandler={removeItemHandler} removeAllItemsHandler={removeAllItemsHandler} />
                 </Route>
             </Switch>
         </Router>
