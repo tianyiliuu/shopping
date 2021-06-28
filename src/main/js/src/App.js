@@ -58,8 +58,8 @@ function App() {
         setNumItems(num);
     }, []);
 
-    const getProductsHander = () => {
-        var requestOptions = {
+    const getProductsHandler = () => {
+        const requestOptions = {
             method: 'GET',
             redirect: 'follow'
         };
@@ -70,7 +70,7 @@ function App() {
             .catch(error => console.log('error', error));
     }
 
-    useEffect(getProductsHander, []);
+    useEffect(getProductsHandler, []);
 
     return (
         <Router>
