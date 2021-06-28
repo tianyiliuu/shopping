@@ -22,17 +22,16 @@ const ProductDetails = props => {
             .catch(error => console.log('error', error));
     }
 
-    useEffect(loadProductHandler, []);
+    useEffect(loadProductHandler, [id]);
 
     let productDetails = <></>
     if (product !== null) {
-        console.log(typeof product["id"]);
         productDetails = (
             <Container className="mt-5">
                 <Image src={placeholder}/>
                 <h3>{product.name}</h3>
                 <h5>$ {product.unitPrice}</h5>
-                <Button onClick={() => addItemHandler(id)}>Add to Cart</Button>
+                <Button onClick={() => addItemHandler(product.id)}>Add to Cart</Button>
                 <p>{product.description}</p>
             </Container>
         );

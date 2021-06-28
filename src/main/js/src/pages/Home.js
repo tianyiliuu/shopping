@@ -1,27 +1,11 @@
-import {useEffect, useState} from "react";
 import {Button, Card, Col, Container, Row} from "react-bootstrap";
 import placeholder from "../images/placeholder.png";
 import {Link} from "react-router-dom";
 
 const Home = props => {
 
-    const [products, setProducts] = useState([]);
-
+    const products = props.products;
     const addItemHandler = props.addItemHandler;
-
-    const getProductsHander = () => {
-        var requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
-
-        fetch("/api/products", requestOptions)
-            .then(response => response.json())
-            .then(result => setProducts(result._embedded.products))
-            .catch(error => console.log('error', error));
-    }
-
-    useEffect(getProductsHander, []);
 
     const productList = products.map(product => (
         <Col xs={6} md={4} lg={3} xl={2} className="d-flex align-items-stretch" key={product._links.self.href}>
