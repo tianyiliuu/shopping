@@ -29,7 +29,7 @@ public class DatabaseLoader implements CommandLineRunner {
     }
 
     private void loadBooks() {
-        ProductCategory book = new ProductCategory("BOOK");
+        ProductCategory book = new ProductCategory("Book");
         book.addProduct(new Product("BOOK-TECH-1000", "Crash Course in Python", "Learn Python at your own pace. The author explains how the technology works in easy-to-understand language. This book includes working examples that you can apply to your own projects. Purchase the book and get started today!", "assets/images/products/books/book-luv2code-1000.png", true, 100, 14.99));
         book.addProduct(new Product("BOOK-TECH-1001", "Become a Guru in JavaScript", "Learn JavaScript at your own pace. The author explains how the technology works in easy-to-understand language. This book includes working examples that you can apply to your own projects. Purchase the book and get started today!", "assets/images/products/books/book-luv2code-1001.png", true, 100, 20.99));
         book.addProduct(new Product("BOOK-TECH-1002", "Exploring Vue.js", "Learn Vue.js at your own pace. The author explains how the technology works in easy-to-understand language. This book includes working examples that you can apply to your own projects. Purchase the book and get started today!", "assets/images/products/books/book-luv2code-1002.png", true, 100, 14.99));

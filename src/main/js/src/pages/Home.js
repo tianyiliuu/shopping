@@ -1,11 +1,17 @@
 import {Button, Card, Col, Container, Row} from "react-bootstrap";
 import placeholder from "../assets/images/products/placeholder.png";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 
 const Home = props => {
 
+    let {categoryId} = useParams();
+
     const products = props.products;
     const addItemHandler = props.addItemHandler;
+
+    if (categoryId !== undefined && products.length !== 0) {
+        console.log(products[0]);
+    }
 
     const productList = products.map(product => (
         <Col xs={6} md={4} lg={3} xl={2} className="d-flex align-items-stretch" key={product._links.self.href}>

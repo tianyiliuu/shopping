@@ -13,6 +13,22 @@ function App() {
     const [numItems, setNumItems] = useState(0);
     const [products, setProducts] = useState([]);
 
+    const [categories, setCategories] = useState([]);
+
+    const fetchCategory = () => {
+        const requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
+        fetch("/api/productCategories", requestOptions)
+            .then(response => response.json())
+            .then(result => setCategories(result._embedded.productCategories))
+            .catch(error => console.log('error', error));
+    }
+
+    useEffect(fetchCategory, []);
+
     const addItemHandler = (id) => {
         id = "" + id;
         let nouveauItem = {
@@ -73,11 +89,16 @@ function App() {
 
     useEffect(getProductsHandler, []);
 
+    console.log(categories);
+
     return (
         <Router>
-            <Header numItems={numItems}/>
+            <Header numItems={numItems} categories={categories}/>
             <Switch>
                 <Route exact path="/">
+                    <Home products={products} addItemHandler={addItemHandler}/>
+                </Route>
+                <Route exact path="/category/:categoryId">
                     <Home products={products} addItemHandler={addItemHandler}/>
                 </Route>
                 <Route path="/products/:id">
