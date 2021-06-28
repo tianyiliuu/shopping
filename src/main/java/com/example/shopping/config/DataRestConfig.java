@@ -24,5 +24,7 @@ public class DataRestConfig implements RepositoryRestConfigurer {
                 .forDomainType(ProductCategory.class)
                 .withItemExposure((metdata, httpMethods) -> httpMethods.disable(unsupportedActions))
                 .withCollectionExposure((metdata, httpMethods) -> httpMethods.disable(unsupportedActions));
+
+        config.exposeIdsFor(Product.class, ProductCategory.class);
     }
 }
