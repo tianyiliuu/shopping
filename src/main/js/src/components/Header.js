@@ -1,6 +1,9 @@
 import {Badge, Button, Form, FormControl, Nav, Navbar, NavDropdown} from "react-bootstrap";
 
 const Header = props => {
+
+    const numItems = props.numItems;
+
     return (
         <Navbar bg="light" expand="lg" sticky="top">
             <Navbar.Brand href="#">My Store</Navbar.Brand>
@@ -11,7 +14,7 @@ const Header = props => {
             }}>
                 <Navbar.Toggle aria-controls="navbarScroll" style={{paddingTop: "3px", paddingBottom: "3px"}}/>
                 <Button variant="outline-primary" style={{marginLeft: "10px"}} className="d-lg-none d-inline-block">
-                    Cart <Badge bg="secondary" style={{backgroundColor: "#CCC", marginLeft: "4px"}}>9</Badge>
+                    Cart <Badge bg="secondary" style={{backgroundColor: "#CCC", marginLeft: "4px"}}>{numItems}</Badge>
                 </Button>
             </div>
             <Navbar.Collapse id="navbarScroll">
@@ -43,7 +46,7 @@ const Header = props => {
                 </Form>
             </Navbar.Collapse>
             <Button variant="outline-primary" style={{marginLeft: "10px"}} className="d-lg-block d-none">
-                Cart <Badge bg="secondary" style={{backgroundColor: "#CCC", marginLeft: "4px"}}>9</Badge>
+                Cart <Badge bg="secondary" style={{backgroundColor: "#CCC", marginLeft: "4px"}}>{numItems}</Badge>
             </Button>
         </Navbar>
 
