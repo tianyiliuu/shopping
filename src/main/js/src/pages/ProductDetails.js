@@ -5,41 +5,37 @@ import placeholder from "../assets/images/products/placeholder.png";
 
 const ProductDetails = props => {
 
-    let {id} = useParams();
-    const [product, setProduct] = useState(null);
+    let {productId} = useParams();
+    console.log(productId);
+    const adjustCartItemHandler = props.adjustCartItemHandler;
 
-    const addItemHandler = props.addItemHandler;
+    const [product, setProduct] = useState({});
+    const [isProductLoaded, setIsProductLoaded] = useState(false);
 
-    const loadProductHandler = () => {
-        var requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
-
-        fetch(`/api/products/${id}`, requestOptions)
+    useEffect(() => {
+        const uri = `/api/products/${productId}`;
+        fetch(uri, {method: 'GET'})
             .then(response => response.json())
-            .then(result => setProduct(result))
+            .then(result => {
+                setProduct(result);
+                setIsProductLoaded(true);
+            })
             .catch(error => console.log('error', error));
-    }
+    }, [productId]);
 
-    useEffect(loadProductHandler, [id]);
-
-    let productDetails = <></>
-    if (product !== null) {
-        productDetails = (
-            <Container className="mt-5">
-                <Image src={placeholder}/>
-                <h3>{product.name}</h3>
-                <h5>$ {product.unitPrice}</h5>
-                <Button onClick={() => addItemHandler(product.id)}>Add to Cart</Button>
-                <p>{product.description}</p>
-            </Container>
-        );
+    if (!isProductLoaded) {
+        return <></>;
     }
 
     return (
         <>
-            {productDetails}
+            <Container className="mt-5">
+                <Image src={placeholder}/>
+                <h3>{product.name}</h3>
+                <h5>$ {product.unitPrice}</h5>
+                <Button onClick={() => adjustCartItemHandler(product.id, 1)}>Add to Cart</Button>
+                <p>{product.description}</p>
+            </Container>
         </>
     );
 }

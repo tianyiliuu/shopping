@@ -1,120 +1,62 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Home from "./pages/Home";
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import ProductDetails from "./pages/ProductDetails";
 import Header from "./components/Header";
+import Home from "./pages/Home";
+import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
-import OrderInfoForm from "./pages/OrderInfoForm";
 
 function App() {
 
-    const [items, setItems] = useState({});
-    const [numItems, setNumItems] = useState(0);
-    const [products, setProducts] = useState([]);
-
-    const [categories, setCategories] = useState([]);
-
-    const fetchCategory = () => {
-        const requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
-
-        fetch("/api/productCategories", requestOptions)
-            .then(response => response.json())
-            .then(result => setCategories(result._embedded.productCategories))
-            .catch(error => console.log('error', error));
+    const [cartItems, setCartItems] = useStickyState({}, "cartItems");
+    const adjustCartItemHandler = (itemId, quantityDiff) => {
+        setCartItems(oldCartItem => {
+            return {
+                ...oldCartItem,
+                [itemId]: (itemId in oldCartItem ? oldCartItem[itemId] : 0) + quantityDiff
+            };
+        })
+    };
+    const removeCartItemHandler = (itemId) => {
+        setCartItems(oldCartItem => {
+            const newCartItem = {...oldCartItem};
+            delete newCartItem[itemId];
+            return newCartItem;
+        })
     }
-
-    useEffect(fetchCategory, []);
-
-    const addItemHandler = (id) => {
-        id = "" + id;
-        let nouveauItem = {
-            ...items,
-            [id]: (id in items ? items[id] : 0) + 1,
-        };
-        setItems(nouveauItem);
-        setNumItems(numItems + 1);
-        localStorage.setItem("items", JSON.stringify(nouveauItem));
-    };
-
-    const removeItemHandler = (id) => {
-        id = "" + id;
-        let nouveauItem = {
-            ...items,
-            [id]: (id in items ? items[id] : 0) - 1,
-        };
-        setItems(nouveauItem);
-        setNumItems(numItems - 1);
-        localStorage.setItem("items", JSON.stringify(nouveauItem));
-    };
-
-    const removeAllItemsHandler = (id) => {
-        id = "" + id;
-        let nouveauItem = {
-            ...items
-        };
-        delete nouveauItem[id];
-        setItems(nouveauItem);
-        console.log(nouveauItem);
-        setNumItems(numItems - items[id]);
-        localStorage.setItem("items", JSON.stringify(nouveauItem));
-    };
-
-    useEffect(() => {
-        let items = localStorage.getItem("items");
-        if (items === null) return;
-        items = JSON.parse(items);
-        let num = 0;
-        for (let key in items) {
-            num += items[key];
-        }
-        setItems(items);
-        setNumItems(num);
-    }, []);
-
-    const getProductsHandler = () => {
-        const requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
-
-        fetch("/api/products?page=0&size=2000", requestOptions)
-            .then(response => response.json())
-            .then(result => setProducts(result._embedded.products))
-            .catch(error => console.log('error', error));
-    }
-
-    useEffect(getProductsHandler, []);
-
-    console.log(categories);
 
     return (
         <Router>
-            <Header numItems={numItems} categories={categories}/>
+            <Header cartItems={cartItems}/>
             <Switch>
                 <Route exact path="/">
-                    <Home products={products} addItemHandler={addItemHandler}/>
+                    <Home adjustCartItemHandler={adjustCartItemHandler}/>
                 </Route>
                 <Route exact path="/category/:categoryId">
-                    <Home products={products} addItemHandler={addItemHandler}/>
+                    <Home adjustCartItemHandler={adjustCartItemHandler}/>
                 </Route>
-                <Route path="/products/:id">
-                    <ProductDetails addItemHandler={addItemHandler}/>
+                <Route path="/products/:productId">
+                    <ProductDetails adjustCartItemHandler={adjustCartItemHandler}/>
                 </Route>
                 <Route excat path="/cart">
-                    <Cart products={products} items={items} addItemHandler={addItemHandler} removeItemHandler={removeItemHandler} removeAllItemsHandler={removeAllItemsHandler} />
-                </Route>
-                <Route excat path="/order-info-form">
-                    <div>sv</div>
-                    <OrderInfoForm />
+                    <Cart cartItems={cartItems} adjustCartItemHandler={adjustCartItemHandler} removeCartItemHandler={removeCartItemHandler} />
                 </Route>
             </Switch>
         </Router>
     );
 }
 
+function useStickyState(defaultValue, key) {
+    const [value, setValue] = React.useState(() => {
+        const stickyValue = window.localStorage.getItem(key);
+        return stickyValue !== null
+            ? JSON.parse(stickyValue)
+            : defaultValue;
+    });
+    React.useEffect(() => {
+        window.localStorage.setItem(key, JSON.stringify(value));
+    }, [key, value]);
+    return [value, setValue];
+}
 
 export default App;

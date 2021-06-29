@@ -1,34 +1,37 @@
-import {Button, ButtonGroup, Container, Image, Row, Table} from "react-bootstrap";
+import {useEffect, useState} from "react";
 import placeholder from "../assets/images/products/placeholder.png";
-import React from "react";
+import {Button, ButtonGroup, Image, Row, Container, Table} from "react-bootstrap";
 import {Link} from "react-router-dom";
-
 
 const Cart = props => {
 
-    const items = props.items;
-    const products = props.products;
-    const addItemHandler = props.addItemHandler;
-    const removeItemHandler = props.removeItemHandler;
-    const removeAllItemsHandler = props.removeAllItemsHandler;
+    const cartItems = props.cartItems;
+    const adjustCartItemHandler = props.adjustCartItemHandler;
+    const removeCartItemHandler = props.removeCartItemHandler;
 
+    const [cartProducts, setCartProducts] = useState([]);
+    const [isCartProductsLoaded, setIsCartProductsLoaded] = useState(false);
 
-    if (products.length === 0) return <></>;
+    useEffect(() => {
+        const urls = Object.keys(cartItems).map(productId => `/api/products/${productId}`);
+        const promises = urls.map(url => fetch(url).then(y => y.json()));
+        Promise.all(promises).then(results => {
+            setCartProducts(results);
+            setIsCartProductsLoaded(true);
+        })
+    }, [cartItems]);
 
-    const findProductById = (targetId) => {
-        return products.filter(product => product.id === Number(targetId))[0];
-    };
+    if (!isCartProductsLoaded) {
+        return <></>;
+    }
 
-    let total = 0;
-    const productRows = [];
-    for (let id in items) {
-        let quantity = items[id];
-        let product = findProductById(id);
-        total += product.unitPrice * quantity;
-        productRows.push(
+    const cartProductsRows = cartProducts.map(product => {
+        const productId = String(product.id);
+        const quantity = cartItems[productId];
+        return (
             <tr key={product._links.self.href}>
                 <td><Image src={placeholder} height="100px" width="100px"/></td>
-                <td>{product.name} <br/> {product.description} <br/> {product.unitPrice}</td>
+                <td><strong>{product.name}</strong> <br/> {product.description} <br/> <em>$ {product.unitPrice}</em></td>
                 <td>
                     {quantity} <br/>
                     Sub-total: $ {(product.unitPrice * quantity).toFixed(2)} <br/>
@@ -36,16 +39,18 @@ const Cart = props => {
                         {
                             (quantity === 1) ?
                                 <Button variant="outline-secondary" disabled>-</Button>
-                                : <Button variant="outline-secondary" onClick={() => removeItemHandler(id)}>-</Button>
+                                : <Button variant="outline-secondary"
+                                          onClick={() => adjustCartItemHandler(productId, -1)}>-</Button>
                         }
-                        <Button variant="outline-secondary" onClick={() => addItemHandler(id)}>+</Button>
-                        <Button variant="outline-secondary" onClick={() => removeAllItemsHandler(id)}>Remove</Button>
+                        <Button variant="outline-secondary"
+                                onClick={() => adjustCartItemHandler(productId, 1)}>+</Button>
+                        <Button variant="outline-secondary"
+                                onClick={() => removeCartItemHandler(productId)}>Remove</Button>
                     </ButtonGroup>
                 </td>
             </tr>
         );
-    }
-
+    });
 
     return (
         <Container>
@@ -60,19 +65,18 @@ const Cart = props => {
                     </tr>
                     </thead>
                     <tbody>
-                    {productRows}
+                    {cartProductsRows}
                     </tbody>
                 </Table>
             </Row>
             <Row className="d-flex">
-                <h5 className="ml-auto">Total: $ {total}</h5>
+                <h5 className="ml-auto">Total: $ total</h5>
             </Row>
             <Row className="d-flex">
                 <Link to="/order-info-form" className="ml-auto"><Button>Order Now</Button></Link>
             </Row>
         </Container>
     );
-
 }
 
 export default Cart;
