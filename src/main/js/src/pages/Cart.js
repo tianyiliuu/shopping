@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
-import placeholder from "../assets/images/products/placeholder.png";
-import {Button, ButtonGroup, Image, Row, Container, Table} from "react-bootstrap";
+import {Button, ButtonGroup, Container, Image, Row, Table} from "react-bootstrap";
 import {Link} from "react-router-dom";
 
 const Cart = props => {
@@ -30,8 +29,9 @@ const Cart = props => {
         const quantity = cartItems[productId];
         return (
             <tr key={product._links.self.href}>
-                <td><Image src={placeholder} height="100px" width="100px"/></td>
-                <td><strong>{product.name}</strong> <br/> {product.description} <br/> <em>$ {product.unitPrice}</em></td>
+                <td><Image src={product.imageUrl} width="100px"/></td>
+                <td><strong>{product.name}</strong> <br/> {product.description} <br/> <em>$ {product.unitPrice}</em>
+                </td>
                 <td>
                     {quantity} <br/>
                     Sub-total: $ {(product.unitPrice * quantity).toFixed(2)} <br/>

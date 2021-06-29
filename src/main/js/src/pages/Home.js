@@ -1,5 +1,4 @@
 import {Button, Card, Col, Container, Row} from "react-bootstrap";
-import placeholder from "../assets/images/products/placeholder.png";
 import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 
@@ -29,7 +28,7 @@ const Home = props => {
     const productList = products.map(product => (
         <Col xs={6} md={4} lg={3} xl={2} className="d-flex align-items-stretch" key={product._links.self.href}>
             <Card className="p-2 m-2 mh-90">
-                <Card.Img variant="top" src={placeholder}/>
+                <Card.Img variant="top" src={product.imageUrl}/>
                 <Card.Body className="d-flex flex-column">
                     <Link to={`/products/${product.id}`}>
                         <Card.Title>{product.name}</Card.Title>

@@ -1,7 +1,6 @@
 import {Button, Container, Image} from "react-bootstrap";
 import {useParams} from 'react-router-dom';
 import {useEffect, useState} from "react";
-import placeholder from "../assets/images/products/placeholder.png";
 
 const ProductDetails = props => {
 
@@ -30,7 +29,7 @@ const ProductDetails = props => {
     return (
         <>
             <Container className="mt-5">
-                <Image src={placeholder}/>
+                <Image src={product.imageUrl}/>
                 <h3>{product.name}</h3>
                 <h5>$ {product.unitPrice}</h5>
                 <Button onClick={() => adjustCartItemHandler(product.id, 1)}>Add to Cart</Button>
