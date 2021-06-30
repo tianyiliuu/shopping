@@ -5,7 +5,6 @@ import {useEffect, useState} from "react";
 const ProductDetails = props => {
 
     let {productId} = useParams();
-    console.log(productId);
     const adjustCartItemHandler = props.adjustCartItemHandler;
 
     const [product, setProduct] = useState({});
@@ -32,7 +31,7 @@ const ProductDetails = props => {
                 <Image src={product.imageUrl}/>
                 <h3>{product.name}</h3>
                 <h5>$ {product.unitPrice}</h5>
-                <Button onClick={() => adjustCartItemHandler(product.id, 1)}>Add to Cart</Button>
+                <Button onClick={() => adjustCartItemHandler(product.id, 1, product.unitPrice)}>Add to Cart</Button>
                 <p>{product.description}</p>
             </Container>
         </>

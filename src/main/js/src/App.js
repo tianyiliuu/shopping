@@ -10,17 +10,20 @@ import CheckOut from "./pages/CheckOut";
 function App() {
 
     const [cartItems, setCartItems] = useStickyState({}, "cartItems");
-    const adjustCartItemHandler = (itemId, quantityDiff) => {
+    const [cartTotalAmount, setCartTotalAmount] = useStickyState(0, "cartTotalAmount");
+    const adjustCartItemHandler = (itemId, quantityDiff, unitPrice) => {
+        setCartTotalAmount(oldAmount => oldAmount + unitPrice * quantityDiff);
         setCartItems(oldCartItem => {
             return {
                 ...oldCartItem,
                 [itemId]: (itemId in oldCartItem ? oldCartItem[itemId] : 0) + quantityDiff
             };
-        })
+        });
     };
-    const removeCartItemHandler = (itemId) => {
+    const removeCartItemHandler = (itemId, unitPrice) => {
         setCartItems(oldCartItem => {
             const newCartItem = {...oldCartItem};
+            setCartTotalAmount(oldAmount => oldAmount - unitPrice * oldCartItem[itemId]);
             delete newCartItem[itemId];
             return newCartItem;
         })
@@ -43,11 +46,12 @@ function App() {
                     <ProductDetails adjustCartItemHandler={adjustCartItemHandler}/>
                 </Route>
                 <Route excat path="/cart">
-                    <Cart cartItems={cartItems} adjustCartItemHandler={adjustCartItemHandler}
+                    <Cart cartItems={cartItems} cartTotalAmount={cartTotalAmount}
+                          adjustCartItemHandler={adjustCartItemHandler}
                           removeCartItemHandler={removeCartItemHandler}/>
                 </Route>
                 <Route excat path="/checkout">
-                    <CheckOut cartItems={cartItems}/>
+                    <CheckOut cartItems={cartItems} cartTotalAmount={cartTotalAmount}/>
                 </Route>
             </Switch>
         </Router>

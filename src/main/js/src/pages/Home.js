@@ -44,7 +44,7 @@ const Home = props => {
                     </Link>
                     <Card.Subtitle className="mb-2 text-muted">$ {product.unitPrice}</Card.Subtitle>
                     <Card.Text>{product.description}</Card.Text>
-                    <Button className="mt-auto" onClick={() => adjustCartItemHandler(product.id, 1)}>Add to
+                    <Button className="mt-auto" onClick={() => adjustCartItemHandler(product.id, 1, product.unitPrice)}>Add to
                         Cart</Button>
                 </Card.Body>
             </Card>

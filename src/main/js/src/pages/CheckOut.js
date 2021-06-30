@@ -127,8 +127,8 @@ const CheckOut = props => {
     const ReviewOrder = (
         <>
             <h3 className="mt-5 mb-3">Review Your Order</h3>
-            <p><strong>Number of Products:</strong> {numberProducts}</p>
-            {/*<p><strong>Total Amount: </strong> $ {numberProducts}</p>*/}
+            <p><strong>Total Quantity:</strong> {numberProducts}</p>
+            <p><strong>Total Price: </strong> $ {props.cartTotalAmount.toFixed(2)}</p>
         </>
     );
 

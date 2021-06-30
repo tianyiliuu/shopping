@@ -5,11 +5,12 @@ import {Link} from "react-router-dom";
 const Cart = props => {
 
     const cartItems = props.cartItems;
+    const cartTotalAmount = props.cartTotalAmount;
     const adjustCartItemHandler = props.adjustCartItemHandler;
     const removeCartItemHandler = props.removeCartItemHandler;
 
     const [cartProducts, setCartProducts] = useState([]);
-    const [totalAmount, setTotalAmount] = useState(0);
+    // const [totalAmount, setTotalAmount] = useState(0);
     const [isCartProductsLoaded, setIsCartProductsLoaded] = useState(false);
 
     useEffect(() => {
@@ -21,12 +22,12 @@ const Cart = props => {
         })
     }, [cartItems]);
 
-    useEffect(() => {
-        setTotalAmount(cartProducts.reduce((acc, cur) => {
-            const productId = String(cur.id);
-            return acc + cur.unitPrice * cartItems[productId];
-        }, 0));
-    }, [cartProducts, cartItems]);
+    // useEffect(() => {
+    //     setTotalAmount(cartProducts.reduce((acc, cur) => {
+    //         const productId = String(cur.id);
+    //         return acc + cur.unitPrice * cartItems[productId];
+    //     }, 0));
+    // }, [cartProducts, cartItems]);
 
     if (!isCartProductsLoaded) {
         return <></>;
@@ -48,12 +49,12 @@ const Cart = props => {
                             (quantity === 1) ?
                                 <Button variant="outline-secondary" disabled>-</Button>
                                 : <Button variant="outline-secondary"
-                                          onClick={() => adjustCartItemHandler(productId, -1)}>-</Button>
+                                          onClick={() => adjustCartItemHandler(productId, -1, product.unitPrice)}>-</Button>
                         }
                         <Button variant="outline-secondary"
-                                onClick={() => adjustCartItemHandler(productId, 1)}>+</Button>
+                                onClick={() => adjustCartItemHandler(productId, 1, product.unitPrice)}>+</Button>
                         <Button variant="outline-secondary"
-                                onClick={() => removeCartItemHandler(productId)}>Remove</Button>
+                                onClick={() => removeCartItemHandler(productId, product.unitPrice)}>Remove</Button>
                     </ButtonGroup>
                 </td>
             </tr>
@@ -78,7 +79,7 @@ const Cart = props => {
                 </Table>
             </Row>
             <Row className="d-flex">
-                <h5 className="ml-auto">Total: ${totalAmount.toFixed(2)}</h5>
+                <h5 className="ml-auto">Total: ${cartTotalAmount.toFixed(2)}</h5>
             </Row>
             <Row className="d-flex">
                 <Link to="/checkout" className="ml-auto"><Button>Order Now</Button></Link>
