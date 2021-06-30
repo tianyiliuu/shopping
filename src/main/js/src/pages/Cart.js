@@ -81,7 +81,7 @@ const Cart = props => {
                 <h5 className="ml-auto">Total: ${totalAmount.toFixed(2)}</h5>
             </Row>
             <Row className="d-flex">
-                <Link to="/order-info-form" className="ml-auto"><Button>Order Now</Button></Link>
+                <Link to="/checkout" className="ml-auto"><Button>Order Now</Button></Link>
             </Row>
         </Container>
     );
