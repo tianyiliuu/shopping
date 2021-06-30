@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 
 const Home = props => {
 
-    let {categoryId} = useParams();
+    let {categoryId, searchName} = useParams();
     const adjustCartItemHandler = props.adjustCartItemHandler;
 
     const [products, setProducts] = useState([]);
@@ -14,13 +14,12 @@ const Home = props => {
 
     useEffect(() => {
         setPage(0);
-    }, [categoryId]);
+    }, [categoryId, searchName]);
 
     useEffect(() => {
-        const uri =
-            categoryId === undefined ?
-                `/api/products?page=${page}&size=20` :
-                `/api/products/search/findByCategoryId?id=${categoryId}&page=${page}&size=20`;
+        let uri = `/api/products?page=${page}&size=20`;
+        if (categoryId !== undefined) uri = `/api/products/search/findByCategoryId?id=${categoryId}&page=${page}&size=20`;
+        if (searchName !== undefined) uri = `/api/products/search/findByNameContaining?name=${searchName}&page=${page}&size=20`
         fetch(uri, {method: 'GET'})
             .then(response => response.json())
             .then(result => {
@@ -29,7 +28,7 @@ const Home = props => {
                 setIsProductsLoaded(true);
             })
             .catch(error => console.log('error', error));
-    }, [categoryId, page, totalPage]);
+    }, [categoryId, searchName, page, totalPage]);
 
     if (!isProductsLoaded) {
         return <></>;

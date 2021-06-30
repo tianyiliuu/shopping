@@ -1,8 +1,16 @@
 import {Badge, Button, Form, FormControl, Nav, Navbar, NavDropdown} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import React, {useEffect, useState} from "react";
+import {useForm} from "react-hook-form";
 
 const Header = props => {
+
+    const history = useHistory();
+
+    const {register, handleSubmit} = useForm();
+    const onSubmit = (d) => {
+        history.push(`/search/${d.searchName}`);
+    }
 
     const cartItems = props.cartItems;
     const numCartItems = Object.keys(cartItems).reduce((acc, curId) => {
@@ -12,11 +20,6 @@ const Header = props => {
     const [categories, setCategories] = useState([]);
     const [isCategoriesLoaded, setIsCategoriesLoaded] = useState(false);
     useEffect(() => {
-        const requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        };
-
         fetch("/api/productCategories", {method: 'GET'})
             .then(response => response.json())
             .then(result => {
@@ -63,14 +66,15 @@ const Header = props => {
                             Link
                         </Nav.Link>
                     </Nav>
-                    <Form className="d-flex">
+                    <Form className="d-flex" onSubmit={handleSubmit(onSubmit)}>
                         <FormControl
                             type="search"
                             placeholder="Search"
                             className="mr-2"
                             aria-label="Search"
+                            {...register("searchName")}
                         />
-                        <Button variant="outline-success">Search</Button>
+                        <Button variant="outline-success" type="submit">Search</Button>
                     </Form>
                 </Navbar.Collapse>
                 <Button variant="outline-primary" style={{marginLeft: "10px"}} className="d-lg-block d-none">

@@ -36,6 +36,9 @@ function App() {
                 <Route exact path="/category/:categoryId">
                     <Home adjustCartItemHandler={adjustCartItemHandler}/>
                 </Route>
+                <Route exact path="/search/:searchName">
+                    <Home adjustCartItemHandler={adjustCartItemHandler}/>
+                </Route>
                 <Route exact path="/products/:productId">
                     <ProductDetails adjustCartItemHandler={adjustCartItemHandler}/>
                 </Route>
