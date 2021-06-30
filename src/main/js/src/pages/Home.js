@@ -1,4 +1,4 @@
-import {Button, Card, Col, Container, Row} from "react-bootstrap";
+import {Button, ButtonGroup, Card, Col, Container, Row} from "react-bootstrap";
 import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 
@@ -9,21 +9,33 @@ const Home = props => {
 
     const [products, setProducts] = useState([]);
     const [isProductsLoaded, setIsProductsLoaded] = useState(false);
+    const [page, setPage] = useState(0);
+    const [totalPage, setTotalPage] = useState(0);
+
     useEffect(() => {
-        const uri = categoryId === undefined ? "/api/products?page=0&size=2000" : `/api/productCategories/${categoryId}/products`;
+        setPage(0);
+    }, [categoryId]);
+
+    useEffect(() => {
+        const uri =
+            categoryId === undefined ?
+                `/api/products?page=${page}&size=20` :
+                `/api/products/search/findByCategoryId?id=${categoryId}&page=${page}&size=20`;
         fetch(uri, {method: 'GET'})
             .then(response => response.json())
             .then(result => {
                 setProducts(result._embedded.products);
+                setTotalPage(result.page.totalPages);
                 setIsProductsLoaded(true);
             })
             .catch(error => console.log('error', error));
-    }, [categoryId]);
+    }, [categoryId, page, totalPage]);
 
     if (!isProductsLoaded) {
         return <></>;
     }
 
+    console.log(totalPage);
 
     const productList = products.map(product => (
         <Col xs={6} md={4} lg={3} xl={2} className="d-flex align-items-stretch" key={product._links.self.href}>
@@ -35,7 +47,8 @@ const Home = props => {
                     </Link>
                     <Card.Subtitle className="mb-2 text-muted">$ {product.unitPrice}</Card.Subtitle>
                     <Card.Text>{product.description}</Card.Text>
-                    <Button className="mt-auto" onClick={() => adjustCartItemHandler(product.id, 1)}>Add to Cart</Button>
+                    <Button className="mt-auto" onClick={() => adjustCartItemHandler(product.id, 1)}>Add to
+                        Cart</Button>
                 </Card.Body>
             </Card>
         </Col>
@@ -46,6 +59,14 @@ const Home = props => {
             <Container fluid>
                 <Row>
                     {productList}
+                </Row>
+                <Row>
+                    <ButtonGroup className="ml-auto m-5" aria-label="Page Nav Buttons">
+                        <Button variant="primary" disabled={page === 0}
+                                onClick={() => setPage(page - 1)}>&lt;</Button>
+                        <Button variant="primary" disabled={page + 1 === totalPage}
+                                onClick={() => setPage(page + 1)}>&gt;</Button>
+                    </ButtonGroup>
                 </Row>
             </Container>
         </>
