@@ -34,8 +34,6 @@ const Home = props => {
         return <></>;
     }
 
-    console.log(totalPage);
-
     const productList = products.map(product => (
         <Col xs={6} md={4} lg={3} xl={2} className="d-flex align-items-stretch" key={product._links.self.href}>
             <Card className="p-2 m-2 mh-90">
@@ -53,6 +51,13 @@ const Home = props => {
         </Col>
     ));
 
+    const navigationButtonList = [...Array(totalPage).keys()].map(pageNumber => (
+        <Button variant={pageNumber === page ? "primary" : "outline-primary"}
+                disabled={pageNumber === page}
+                key={pageNumber}
+                onClick={() => setPage(pageNumber)}>{pageNumber + 1}</Button>
+    ));
+
     return (
         <>
             <Container fluid>
@@ -61,9 +66,10 @@ const Home = props => {
                 </Row>
                 <Row>
                     <ButtonGroup className="ml-auto m-5" aria-label="Page Nav Buttons">
-                        <Button variant="primary" disabled={page === 0}
+                        <Button variant="outline-primary" disabled={page === 0}
                                 onClick={() => setPage(page - 1)}>&lt;</Button>
-                        <Button variant="primary" disabled={page + 1 === totalPage}
+                        {navigationButtonList}
+                        <Button variant="outline-primary" disabled={page + 1 === totalPage}
                                 onClick={() => setPage(page + 1)}>&gt;</Button>
                     </ButtonGroup>
                 </Row>

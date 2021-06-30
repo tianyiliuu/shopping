@@ -26,7 +26,7 @@ const Cart = props => {
             const productId = String(cur.id);
             return acc + cur.unitPrice * cartItems[productId];
         }, 0));
-    }, [cartProducts]);
+    }, [cartProducts, cartItems]);
 
     if (!isCartProductsLoaded) {
         return <></>;
