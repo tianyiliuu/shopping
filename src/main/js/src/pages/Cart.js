@@ -9,6 +9,7 @@ const Cart = props => {
     const removeCartItemHandler = props.removeCartItemHandler;
 
     const [cartProducts, setCartProducts] = useState([]);
+    const [totalAmount, setTotalAmount] = useState(0);
     const [isCartProductsLoaded, setIsCartProductsLoaded] = useState(false);
 
     useEffect(() => {
@@ -19,6 +20,13 @@ const Cart = props => {
             setIsCartProductsLoaded(true);
         })
     }, [cartItems]);
+
+    useEffect(() => {
+        setTotalAmount(cartProducts.reduce((acc, cur) => {
+            const productId = String(cur.id);
+            return acc + cur.unitPrice * cartItems[productId];
+        }, 0));
+    }, [cartProducts]);
 
     if (!isCartProductsLoaded) {
         return <></>;
@@ -53,7 +61,7 @@ const Cart = props => {
     });
 
     return (
-        <Container>
+        <Container className="mb-5">
             <Row>
                 <h3 className="m-3">Cart</h3><br/>
                 <Table>
@@ -70,7 +78,7 @@ const Cart = props => {
                 </Table>
             </Row>
             <Row className="d-flex">
-                <h5 className="ml-auto">Total: $ total</h5>
+                <h5 className="ml-auto">Total: ${totalAmount.toFixed(2)}</h5>
             </Row>
             <Row className="d-flex">
                 <Link to="/order-info-form" className="ml-auto"><Button>Order Now</Button></Link>
