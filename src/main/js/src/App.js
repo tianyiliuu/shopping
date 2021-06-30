@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
+import OrderInfoForm from "./pages/OrderInfoForm";
 
 function App() {
 
@@ -39,7 +40,11 @@ function App() {
                     <ProductDetails adjustCartItemHandler={adjustCartItemHandler}/>
                 </Route>
                 <Route excat path="/cart">
-                    <Cart cartItems={cartItems} adjustCartItemHandler={adjustCartItemHandler} removeCartItemHandler={removeCartItemHandler} />
+                    <Cart cartItems={cartItems} adjustCartItemHandler={adjustCartItemHandler}
+                          removeCartItemHandler={removeCartItemHandler}/>
+                </Route>
+                <Route excat path="/order-info-form">
+                    <OrderInfoForm/>
                 </Route>
             </Switch>
         </Router>
