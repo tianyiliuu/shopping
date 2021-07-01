@@ -4,7 +4,17 @@ import {useForm} from "react-hook-form";
 const CheckOut = props => {
 
     const {register, handleSubmit} = useForm();
-    const onSubmit = (d) => alert(JSON.stringify(d));
+    const onSubmit = (d) => {
+        console.log(Object.keys(d));
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json");
+
+        const purchase = purchaseBuilder(d);
+        fetch("/api/checkout/purchase", {method: "POST", headers: headers, body: JSON.stringify(purchase)})
+            .then(response => response.json())
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));
+    };
 
     const Customer = (
         <>
@@ -131,6 +141,39 @@ const CheckOut = props => {
             <p><strong>Total Price: </strong> $ {props.cartTotalAmount.toFixed(2)}</p>
         </>
     );
+
+    const purchaseBuilder = (d) => {
+        const purchase = {};
+        purchase["customer"] = {
+            "firstName": d.firstName,
+            "lastName": d.lastName,
+            "email": d.email
+        };
+        purchase["shippingAddress"] = {
+            "address": d.shippingAddress,
+            "address2": d.shippingAddress_2,
+            "city": d.shippingCity,
+            "province": d.shippingProvince,
+            "postalCode": d.shippingPostalCode
+        };
+        purchase["billingAddress"] = {
+            "address": d.billingAddress,
+            "address2": d.billingAddress_2,
+            "city": d.billingCity,
+            "province": d.billingProvince,
+            "postalCode": d.billingPostalCode
+        };
+        purchase["order"] = {
+            "totalQuantity": numberProducts,
+            "totalPrice": props.cartTotalAmount
+        };
+        purchase["orderItems"] = Object.keys(props.cartItems).map(productId => ({
+            "productId": productId,
+            "quantity": props.cartItems[productId]
+        }));
+
+        return purchase;
+    }
 
 
     return (

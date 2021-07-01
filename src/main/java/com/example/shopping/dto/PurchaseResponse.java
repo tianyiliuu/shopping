@@ -10,10 +10,10 @@ import java.util.Set;
 
 @Data
 public class PurchaseResponse {
-    private String orderTrackingNumber;
-    private Customer customer;
-    private Address shippingAddress;
-    private Address billingAddress;
-    private Order order;
-    private Set<OrderItem> orderItems;
+    private final String orderTrackingNumber;
+//    private Customer customer;
+//    private Address shippingAddress;
+//    private Address billingAddress;
+//    private Order order;
+//    private Set<OrderItem> orderItems;
 }
