@@ -1,11 +1,12 @@
 import {Button, ButtonGroup, Card, Col, Container, Row} from "react-bootstrap";
 import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
+import {useCart} from "../context/cart";
 
-const Home = props => {
+const Home = () => {
 
     let {categoryId, searchName} = useParams();
-    const adjustCartItemHandler = props.adjustCartItemHandler;
+    const {adjustCartItemHandler} = useCart();
 
     const [products, setProducts] = useState([]);
     const [isProductsLoaded, setIsProductsLoaded] = useState(false);

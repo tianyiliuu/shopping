@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
 import CheckOut from "./pages/CheckOut";
+import {CartContext} from "./context/cart";
 
 function App() {
 
@@ -30,31 +31,36 @@ function App() {
     }
 
     return (
-        <Router>
-            <Header cartItems={cartItems}/>
-            <Switch>
-                <Route exact path="/">
-                    <Home adjustCartItemHandler={adjustCartItemHandler}/>
-                </Route>
-                <Route exact path="/category/:categoryId">
-                    <Home adjustCartItemHandler={adjustCartItemHandler}/>
-                </Route>
-                <Route exact path="/search/:searchName">
-                    <Home adjustCartItemHandler={adjustCartItemHandler}/>
-                </Route>
-                <Route exact path="/products/:productId">
-                    <ProductDetails adjustCartItemHandler={adjustCartItemHandler}/>
-                </Route>
-                <Route excat path="/cart">
-                    <Cart cartItems={cartItems} cartTotalAmount={cartTotalAmount}
-                          adjustCartItemHandler={adjustCartItemHandler}
-                          removeCartItemHandler={removeCartItemHandler}/>
-                </Route>
-                <Route excat path="/checkout">
-                    <CheckOut cartItems={cartItems} cartTotalAmount={cartTotalAmount}/>
-                </Route>
-            </Switch>
-        </Router>
+        <CartContext.Provider value={{
+            cartItems,
+            adjustCartItemHandler,
+            removeCartItemHandler,
+            cartTotalAmount
+        }}>
+            <Router>
+                <Header />
+                <Switch>
+                    <Route exact path="/">
+                        <Home />
+                    </Route>
+                    <Route exact path="/category/:categoryId">
+                        <Home />
+                    </Route>
+                    <Route exact path="/search/:searchName">
+                        <Home />
+                    </Route>
+                    <Route exact path="/products/:productId">
+                        <ProductDetails />
+                    </Route>
+                    <Route excat path="/cart">
+                        <Cart />
+                    </Route>
+                    <Route excat path="/checkout">
+                        <CheckOut />
+                    </Route>
+                </Switch>
+            </Router>
+        </CartContext.Provider>
     );
 }
 

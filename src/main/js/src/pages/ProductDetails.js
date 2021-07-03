@@ -1,11 +1,12 @@
 import {Button, Container, Image} from "react-bootstrap";
 import {useParams} from 'react-router-dom';
 import {useEffect, useState} from "react";
+import {useCart} from "../context/cart";
 
-const ProductDetails = props => {
+const ProductDetails = () => {
 
     let {productId} = useParams();
-    const adjustCartItemHandler = props.adjustCartItemHandler;
+    const {adjustCartItemHandler} = useCart();
 
     const [product, setProduct] = useState({});
     const [isProductLoaded, setIsProductLoaded] = useState(false);

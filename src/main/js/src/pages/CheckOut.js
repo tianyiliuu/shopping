@@ -1,7 +1,10 @@
 import {Button, Col, Container, Form, Row} from "react-bootstrap";
 import {useForm} from "react-hook-form";
+import {useCart} from "../context/cart";
 
-const CheckOut = props => {
+const CheckOut = () => {
+
+    const {cartItems, cartTotalAmount} = useCart();
 
     const {register, handleSubmit} = useForm();
     const onSubmit = (d) => {
@@ -130,15 +133,15 @@ const CheckOut = props => {
         </>
     )
 
-    const numberProducts = Object.keys(props.cartItems).reduce((acc, cur) => {
-        return acc + props.cartItems[cur];
+    const numberProducts = Object.keys(cartItems).reduce((acc, cur) => {
+        return acc + cartItems[cur];
     }, 0);
 
     const ReviewOrder = (
         <>
             <h3 className="mt-5 mb-3">Review Your Order</h3>
             <p><strong>Total Quantity:</strong> {numberProducts}</p>
-            <p><strong>Total Price: </strong> $ {props.cartTotalAmount.toFixed(2)}</p>
+            <p><strong>Total Price: </strong> $ {cartTotalAmount.toFixed(2)}</p>
         </>
     );
 
@@ -165,11 +168,11 @@ const CheckOut = props => {
         };
         purchase["order"] = {
             "totalQuantity": numberProducts,
-            "totalPrice": props.cartTotalAmount
+            "totalPrice": cartTotalAmount
         };
-        purchase["orderItems"] = Object.keys(props.cartItems).map(productId => ({
+        purchase["orderItems"] = Object.keys(cartItems).map(productId => ({
             "productId": productId,
-            "quantity": props.cartItems[productId]
+            "quantity": cartItems[productId]
         }));
 
         return purchase;

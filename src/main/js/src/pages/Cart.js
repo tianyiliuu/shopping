@@ -1,16 +1,13 @@
 import {useEffect, useState} from "react";
 import {Button, ButtonGroup, Container, Image, Row, Table} from "react-bootstrap";
 import {Link} from "react-router-dom";
+import {useCart} from "../context/cart";
 
-const Cart = props => {
+const Cart = () => {
 
-    const cartItems = props.cartItems;
-    const cartTotalAmount = props.cartTotalAmount;
-    const adjustCartItemHandler = props.adjustCartItemHandler;
-    const removeCartItemHandler = props.removeCartItemHandler;
+    const {cartItems, cartTotalAmount, adjustCartItemHandler, removeCartItemHandler} = useCart();
 
     const [cartProducts, setCartProducts] = useState([]);
-    // const [totalAmount, setTotalAmount] = useState(0);
     const [isCartProductsLoaded, setIsCartProductsLoaded] = useState(false);
 
     useEffect(() => {
@@ -21,13 +18,6 @@ const Cart = props => {
             setIsCartProductsLoaded(true);
         })
     }, [cartItems]);
-
-    // useEffect(() => {
-    //     setTotalAmount(cartProducts.reduce((acc, cur) => {
-    //         const productId = String(cur.id);
-    //         return acc + cur.unitPrice * cartItems[productId];
-    //     }, 0));
-    // }, [cartProducts, cartItems]);
 
     if (!isCartProductsLoaded) {
         return <></>;

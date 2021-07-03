@@ -2,9 +2,11 @@ import {Badge, Button, Form, FormControl, Nav, Navbar, NavDropdown} from "react-
 import {Link, useHistory} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
+import {useCart} from "../context/cart";
 
-const Header = props => {
+const Header = () => {
 
+    const {cartItems} = useCart();
     const history = useHistory();
 
     const {register, handleSubmit} = useForm();
@@ -12,7 +14,6 @@ const Header = props => {
         history.push(`/search/${d.searchName}`);
     }
 
-    const cartItems = props.cartItems;
     const numCartItems = Object.keys(cartItems).reduce((acc, curId) => {
         return acc + cartItems[curId];
     }, 0);
