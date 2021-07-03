@@ -4,6 +4,7 @@ import com.example.shopping.dto.Purchase;
 import com.example.shopping.dto.PurchaseResponse;
 import com.example.shopping.service.CheckoutService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,8 +22,10 @@ public class CheckoutController {
     }
 
     @PostMapping("/purchase")
-    public PurchaseResponse placeOrder(@RequestBody Purchase purchase) {
+    public PurchaseResponse placeOrder(@RequestBody Purchase purchase, Authentication authentication) {
         System.out.println(purchase);
+        if (!authentication.getName().equals(purchase.getCustomer().getUsername()))
+            throw new RuntimeException();
         return checkoutService.placeOrder(purchase);
     }
 }

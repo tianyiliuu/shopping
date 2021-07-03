@@ -40,17 +40,7 @@ public class CheckoutServiceImpl implements CheckoutService {
 
         customerRepository.save(customer);
 
-        return new PurchaseResponse(order.getOrderTrackingNumber());
+        return new PurchaseResponse("success");
 
-        // 206 video
-//        PurchaseResponse response = new PurchaseResponse();
-//        response.setOrderTrackingNumber("ffff");
-//        response.setCustomer(purchase.getCustomer());
-//        response.setShippingAddress(purchase.getShippingAddress());
-//        response.setBillingAddress(purchase.getBillingAddress());
-//        response.setOrder(purchase.getOrder());
-//        response.setOrderItems(purchase.getOrderItems());
-
-//        return response;
     }
 }

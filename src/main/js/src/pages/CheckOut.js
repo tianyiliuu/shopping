@@ -1,8 +1,12 @@
 import {Button, Col, Container, Form, Row} from "react-bootstrap";
 import {useForm} from "react-hook-form";
 import {useCart} from "../context/cart";
+import {useAuth} from "../context/auth";
+import {Redirect} from "react-router-dom";
 
 const CheckOut = () => {
+
+    const {user} = useAuth();
 
     const {cartItems, cartTotalAmount} = useCart();
 
@@ -11,33 +15,13 @@ const CheckOut = () => {
         console.log(Object.keys(d));
         const headers = new Headers();
         headers.append("Content-Type", "application/json");
-
+        headers.append("Authorization", "Bearer " + user.token)
         const purchase = purchaseBuilder(d);
         fetch("/api/checkout/purchase", {method: "POST", headers: headers, body: JSON.stringify(purchase)})
             .then(response => response.json())
             .then(result => console.log(result))
             .catch(error => console.log('error', error));
     };
-
-    const Customer = (
-        <>
-            <h3>Customer</h3>
-            <Row>
-                <Form.Group as={Col} controlId="formGridFirstname">
-                    <Form.Label>Firstname</Form.Label>
-                    <Form.Control {...register("firstName")} placeholder="Firstname"/>
-                </Form.Group>
-                <Form.Group as={Col} controlId="formGridLastname">
-                    <Form.Label>Lastname</Form.Label>
-                    <Form.Control {...register("lastName")} placeholder="Lastname"/>
-                </Form.Group>
-            </Row>
-            <Form.Group className="mb-3" controlId="formEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control {...register("email")} type="email" placeholder="Enter email"/>
-            </Form.Group>
-        </>
-    );
 
     const ShippingAddress = (
         <>
@@ -148,9 +132,7 @@ const CheckOut = () => {
     const purchaseBuilder = (d) => {
         const purchase = {};
         purchase["customer"] = {
-            "firstName": d.firstName,
-            "lastName": d.lastName,
-            "email": d.email
+            "username": user.username
         };
         purchase["shippingAddress"] = {
             "address": d.shippingAddress,
@@ -178,13 +160,15 @@ const CheckOut = () => {
         return purchase;
     }
 
+    if (user === null) {
+        return <Redirect to="/login"/>;
+    }
 
     return (
         <Container fluid className="mt-5 mb-5">
             <Row>
                 <Col lg={6} className="m-auto">
                     <Form onSubmit={handleSubmit(onSubmit)}>
-                        {Customer}
                         {ShippingAddress}
                         {BillingAddress}
                         {CreditCardInformation}
