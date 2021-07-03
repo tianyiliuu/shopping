@@ -3,8 +3,11 @@ import {Link, useHistory} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import {useCart} from "../context/cart";
+import {useAuth} from "../context/auth";
 
 const Header = () => {
+
+    const {user, setUser} = useAuth();
 
     const {cartItems} = useCart();
     const history = useHistory();
@@ -35,7 +38,7 @@ const Header = () => {
     } else {
         return (
             <Navbar bg="light" expand="lg" sticky="top">
-                <Navbar.Brand href="#">My Store</Navbar.Brand>
+                <Navbar.Brand href="#">{`Hi, ${user ? user.username : "guest"}`}</Navbar.Brand>
                 <div style={{
                     display: "flex",
                     justifyContent: "center",
@@ -46,6 +49,17 @@ const Header = () => {
                         Cart <Badge bg="secondary"
                                     style={{backgroundColor: "#CCC", marginLeft: "4px"}}>{numCartItems}</Badge>
                     </Button>
+                    {user ?
+                        (<Button variant="outline-primary" style={{marginLeft: "10px"}}
+                                 className="d-lg-none d-inline-block"
+                                 onClick={() => setUser(null)}>
+                            Logout
+                        </Button>) :
+                        (<Button variant="outline-primary" style={{marginLeft: "10px"}}
+                                 className="d-lg-none d-inline-block"
+                                 as={Link} to="/login">
+                            Login
+                        </Button>)}
                 </div>
                 <Navbar.Collapse id="navbarScroll">
                     <Nav
@@ -82,6 +96,15 @@ const Header = () => {
                     Cart <Badge bg="secondary"
                                 style={{backgroundColor: "#CCC", marginLeft: "4px"}}>{numCartItems}</Badge>
                 </Button>
+                {user ?
+                    (<Button variant="outline-primary" style={{marginLeft: "10px"}} className="d-lg-block d-none"
+                             onClick={() => setUser(null)}>
+                        Logout
+                    </Button>) :
+                    (<Button variant="outline-primary" style={{marginLeft: "10px"}} className="d-lg-block d-none"
+                             as={Link} to="/login">
+                        Login
+                    </Button>)}
             </Navbar>
         );
     }

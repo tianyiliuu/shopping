@@ -7,8 +7,12 @@ import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
 import CheckOut from "./pages/CheckOut";
 import {CartContext} from "./context/cart";
+import {AuthContext} from "./context/auth";
+import Login from "./pages/Login";
 
 function App() {
+
+    const [user, setUser] = useStickyState(null, "user");
 
     const [cartItems, setCartItems] = useStickyState({}, "cartItems");
     const [cartTotalAmount, setCartTotalAmount] = useStickyState(0, "cartTotalAmount");
@@ -30,6 +34,8 @@ function App() {
         })
     }
 
+    console.log(user);
+
     return (
         <CartContext.Provider value={{
             cartItems,
@@ -37,29 +43,35 @@ function App() {
             removeCartItemHandler,
             cartTotalAmount
         }}>
-            <Router>
-                <Header />
-                <Switch>
-                    <Route exact path="/">
-                        <Home />
-                    </Route>
-                    <Route exact path="/category/:categoryId">
-                        <Home />
-                    </Route>
-                    <Route exact path="/search/:searchName">
-                        <Home />
-                    </Route>
-                    <Route exact path="/products/:productId">
-                        <ProductDetails />
-                    </Route>
-                    <Route excat path="/cart">
-                        <Cart />
-                    </Route>
-                    <Route excat path="/checkout">
-                        <CheckOut />
-                    </Route>
-                </Switch>
-            </Router>
+            <AuthContext.Provider value={{
+                user,
+                setUser
+            }}>
+                <Router>
+                    <Header/>
+                    <Switch>
+                        <Route exact path="/">
+                            <Home/>
+                        </Route>
+                        <Route exact path="/category/:categoryId">
+                            <Home/>
+                        </Route>
+                        <Route exact path="/search/:searchName">
+                            <Home/>
+                        </Route>
+                        <Route exact path="/products/:productId">
+                            <ProductDetails/>
+                        </Route>
+                        <Route excat path="/cart">
+                            <Cart/>
+                        </Route>
+                        <Route excat path="/checkout">
+                            <CheckOut/>
+                        </Route>
+                        <Route exact path="/login" component={Login} />
+                    </Switch>
+                </Router>
+            </AuthContext.Provider>
         </CartContext.Provider>
     );
 }
