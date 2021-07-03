@@ -1,9 +1,12 @@
 package com.example.shopping.config;
 
+import com.example.shopping.entity.ERole;
+import com.example.shopping.entity.Role;
 import com.example.shopping.repository.ProductCategoryRepository;
 import com.example.shopping.repository.ProductRepository;
 import com.example.shopping.entity.Product;
 import com.example.shopping.entity.ProductCategory;
+import com.example.shopping.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -26,6 +29,16 @@ public class DatabaseLoader implements CommandLineRunner {
         loadMugs();
         loadPads();
         loadTags();
+        loadRoles();
+    }
+
+    @Autowired
+    private RoleRepository repository;
+
+    private void loadRoles() {
+        repository.save(new Role(ERole.ROLE_ADMIN));
+        repository.save(new Role(ERole.ROLE_USER));
+        repository.save(new Role(ERole.ROLE_MODERATOR));
     }
 
     private void loadBooks() {
