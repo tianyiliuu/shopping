@@ -12,11 +12,6 @@ const Signup = () => {
     const [isError, setIsError] = useState(false);
 
     const onSubmit = (d) => {
-        d["role"] = [
-            "mod",
-            "user"
-        ];
-        console.log(d);
         const headers = new Headers();
         headers.append("Content-Type", "application/json");
         fetch("/api/auth/signup", {method: "POST", headers: headers, body: JSON.stringify(d)})
@@ -45,10 +40,6 @@ const Signup = () => {
                         <Form.Group className="mb-3" controlId="signupUsername">
                             <Form.Label>Username</Form.Label>
                             <Form.Control {...register("username")} />
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="signupUsername">
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control type="email" {...register("email")} />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="signupPassword">
                             <Form.Label>Password</Form.Label>
