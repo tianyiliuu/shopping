@@ -1,16 +1,14 @@
 package com.example.shopping.service;
 
-import com.example.shopping.dao.CustomerRepository;
+import com.example.shopping.repository.CustomerRepository;
 import com.example.shopping.dto.Purchase;
 import com.example.shopping.dto.PurchaseResponse;
 import com.example.shopping.entity.Customer;
 import com.example.shopping.entity.Order;
 import com.example.shopping.entity.OrderItem;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
 import java.util.UUID;
 
 @Service

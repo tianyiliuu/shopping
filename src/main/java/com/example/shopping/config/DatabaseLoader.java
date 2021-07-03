@@ -1,7 +1,7 @@
 package com.example.shopping.config;
 
-import com.example.shopping.dao.ProductCategoryRepository;
-import com.example.shopping.dao.ProductRepository;
+import com.example.shopping.repository.ProductCategoryRepository;
+import com.example.shopping.repository.ProductRepository;
 import com.example.shopping.entity.Product;
 import com.example.shopping.entity.ProductCategory;
 import org.springframework.beans.factory.annotation.Autowired;

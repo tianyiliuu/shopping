@@ -1,4 +1,4 @@
-package com.example.shopping.dao;
+package com.example.shopping.repository;
 
 import com.example.shopping.entity.Product;
 import org.springframework.data.domain.Page;
