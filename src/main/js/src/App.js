@@ -9,6 +9,7 @@ import CheckOut from "./pages/CheckOut";
 import {CartContext} from "./context/cart";
 import {AuthContext} from "./context/auth";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 function App() {
 
@@ -69,6 +70,7 @@ function App() {
                             <CheckOut/>
                         </Route>
                         <Route exact path="/login" component={Login} />
+                        <Route exact path="/signup" component={Signup} />
                     </Switch>
                 </Router>
             </AuthContext.Provider>

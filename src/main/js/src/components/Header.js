@@ -60,6 +60,17 @@ const Header = () => {
                                  as={Link} to="/login">
                             Login
                         </Button>)}
+                    {user ?
+                        (<Button variant="outline-primary" style={{marginLeft: "10px"}}
+                                 className="d-lg-none d-inline-block"
+                                 as={Link} to="/orders">
+                            My Orders
+                        </Button>) :
+                        (<Button variant="outline-primary" style={{marginLeft: "10px"}}
+                                 className="d-lg-none d-inline-block"
+                                 as={Link} to="/signup">
+                            Register
+                        </Button>)}
                 </div>
                 <Navbar.Collapse id="navbarScroll">
                     <Nav
@@ -67,8 +78,8 @@ const Header = () => {
                         style={{maxHeight: '200px'}}
                         navbarScroll
                     >
-                        <Nav.Link href="#action1">Home</Nav.Link>
-                        <Nav.Link href="#action2">CCC</Nav.Link>
+                        {/*<Nav.Link href="#action1">Home</Nav.Link>*/}
+                        {/*<Nav.Link href="#action2">CCC</Nav.Link>*/}
                         <NavDropdown title="Category" id="navbarScrollingDropdown">
                             {categories.map(category => (
                                 <NavDropdown.Item as={Link} to={`/category/${category.id}`}
@@ -77,9 +88,9 @@ const Header = () => {
                             <NavDropdown.Divider/>
                             <NavDropdown.Item as={Link} to="/">All</NavDropdown.Item>
                         </NavDropdown>
-                        <Nav.Link href="#" disabled>
-                            Link
-                        </Nav.Link>
+                        {/*<Nav.Link href="#" disabled>*/}
+                        {/*    Link*/}
+                        {/*</Nav.Link>*/}
                     </Nav>
                     <Form className="d-flex" onSubmit={handleSubmit(onSubmit)}>
                         <FormControl
@@ -104,6 +115,15 @@ const Header = () => {
                     (<Button variant="outline-primary" style={{marginLeft: "10px"}} className="d-lg-block d-none"
                              as={Link} to="/login">
                         Login
+                    </Button>)}
+                {user ?
+                    (<Button variant="outline-primary" style={{marginLeft: "10px"}} className="d-lg-block d-none"
+                             as={Link} to="/orders">
+                        My Orders
+                    </Button>) :
+                    (<Button variant="outline-primary" style={{marginLeft: "10px"}} className="d-lg-block d-none"
+                             as={Link} to="/signup">
+                        Register
                     </Button>)}
             </Navbar>
         );
