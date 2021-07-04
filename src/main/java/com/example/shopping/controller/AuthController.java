@@ -3,9 +3,11 @@ package com.example.shopping.controller;
 import com.example.shopping.dto.JwtResponse;
 import com.example.shopping.dto.LoginRequest;
 import com.example.shopping.dto.SignupRequest;
+import com.example.shopping.entity.Customer;
 import com.example.shopping.entity.ERole;
 import com.example.shopping.entity.Role;
 import com.example.shopping.entity.User;
+import com.example.shopping.repository.CustomerRepository;
 import com.example.shopping.repository.RoleRepository;
 import com.example.shopping.repository.UserRepository;
 import com.example.shopping.security.CustomUserDetails;
@@ -32,19 +34,22 @@ import java.util.stream.Collectors;
 public class AuthController {
 
     @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    RoleRepository roleRepository;
+    private CustomerRepository customerRepository;
 
     @Autowired
-    PasswordEncoder encoder;
+    private RoleRepository roleRepository;
 
     @Autowired
-    JwtUtils jwtUtils;
+    private PasswordEncoder encoder;
+
+    @Autowired
+    private JwtUtils jwtUtils;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
@@ -86,6 +91,10 @@ public class AuthController {
 
         user.setRoles(roles);
         userRepository.save(user);
+
+        Customer customer = new Customer();
+        customer.setUsername(user.getUsername());
+        customerRepository.save(customer);
 
         return ResponseEntity.ok("User registered successfully!");
     }

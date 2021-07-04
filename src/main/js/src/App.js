@@ -10,6 +10,8 @@ import {CartContext} from "./context/cart";
 import {AuthContext} from "./context/auth";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Order from "./pages/Order";
+import OrderDetails from "./pages/OrderDetails";
 
 function App() {
 
@@ -71,6 +73,10 @@ function App() {
                         </Route>
                         <Route exact path="/login" component={Login} />
                         <Route exact path="/signup" component={Signup} />
+                        <Route exact path="/orders" component={Order} />
+                        <Route exact path="/orders/:orderId">
+                            <OrderDetails/>
+                        </Route>
                     </Switch>
                 </Router>
             </AuthContext.Provider>

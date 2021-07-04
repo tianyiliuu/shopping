@@ -1,5 +1,6 @@
 package com.example.shopping.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,5 +19,6 @@ public class OrderItem {
     private int quantity;
 
     @ManyToOne
+    @JsonIgnore
     private Order order;
 }
